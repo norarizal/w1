@@ -30,9 +30,6 @@ library(readr)
 library(modelr)
 library(broom)
 library(ggplot2)
-# ___
-# ___
-# ___
 ```
 
 Dalam regresi linier selalu hanya ada satu *outcome variable* `y` dan satu atau lebih *predictor/explanatory variable(s)*. Anda akan mempergunakan dataset `evals` untuk melakukan pemodelan. Dataset `evals` tersebut berisikan skor penilaian terhadap pengajar beserta faktor-faktor lain yang berkaitan dengan individu pengajar atau kelas yang diajar. Imporlah dataset tersebut dengan melengkapi baris kode dibawah ini. Ada berapa observasi dan ada variabel pada dataset tersebut?
@@ -115,11 +112,9 @@ ggplot(evals, aes(x = bty_avg, y = score)) +
   geom_smooth(method = "lm")
 ```
 
-
 Selanjutnya Anda tertarik untuk mempelajari keterkaitan antara `score` dengan `age`. Buatlah model untuk kedua variabel tersebut dan simpanlah dengan nama `model2`. Periksa bagaimana kualitas dari `model2` tersebut serta buatlah grafik menggunakan ggplot yang menyertakan garis `fitted value`!
 
 ```{r}
-
 model2 <- lm(score ~ age, data = evals)
 
 ggplot(evals, aes(x = age, y = score)) +
@@ -135,4 +130,13 @@ evals %>%
   ggplot(aes(x = pred, y = score, colour = model)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
+```
+model lain dalam menggambarkan plot dengan memisahkan dua model yang berbeda.
+```{r}
+evals %>% 
+  gather_predictions(model1, model2) %>% 
+  ggplot(aes(x = pred, y = score)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~model)
 ```
